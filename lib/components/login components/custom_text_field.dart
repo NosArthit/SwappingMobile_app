@@ -1,19 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:form_field_validator/form_field_validator.dart' as form_field;
 
-class LogInFormTextField extends StatelessWidget {
-
-  final controller;
+class CustomTextField extends StatelessWidget {
+  final TextEditingController controller;
+  final String labelText;
   final String hintText;
-  final bool obscureText; 
-  final Function onSaved;
-  final validator;
+  final bool obscureText;
+  final FormFieldSetter<String> onSaved;
+  final form_field.FormFieldValidator<String> validator;
 
-  const LogInFormTextField({super.key,
+  const CustomTextField({
     required this.controller,
+    required this.labelText,
     required this.hintText,
-    required this.obscureText,
-    required this.onSaved, 
-    required this.validator
+    this.obscureText = false,
+    required this.onSaved,
+    required this.validator,
   });
 
   @override
@@ -22,7 +24,6 @@ class LogInFormTextField extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 25.0),
       child: TextFormField(
         controller: controller,
-        obscureText: obscureText,
         decoration: InputDecoration(
           enabledBorder: OutlineInputBorder(
             borderSide: BorderSide(color: Colors.white),
@@ -34,7 +35,12 @@ class LogInFormTextField extends StatelessWidget {
           filled: true,
           hintText: hintText,
         ),
+        obscureText: obscureText,
+        onSaved: onSaved,
+        validator: validator,
       ),
     );
   }
 }
+
+

@@ -3,12 +3,14 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:form_field_validator/form_field_validator.dart';
-import 'package:my_application/components/signin_btn.dart';
-import 'package:my_application/components/squaretile.dart';
-import 'package:my_application/models/profile.dart';
+import 'package:my_application/datamodels/profile.dart';
 import 'package:my_application/pages/first_page.dart';
 import 'package:my_application/pages/forgotpassword_page.dart';
 import 'package:my_application/pages/register_page.dart';
+
+import '../components/login components/login_form_textfield.dart';
+import '../components/login components/singinbtn.dart';
+import '../components/login components/squaretile.dart';
 
 class LoginPage extends StatefulWidget {
   LoginPage({super.key});
@@ -69,9 +71,7 @@ class _LoginPageState extends State<LoginPage> {
                             size: 70,
                           ),
 
-                          const SizedBox(
-                            height: 15,
-                          ),
+                          const SizedBox(height: 15),
 
                           Text(
                             "Welcome back again!",
@@ -83,64 +83,39 @@ class _LoginPageState extends State<LoginPage> {
 
                           const SizedBox(height: 15),
 
-                          //Ueser name textfield
-                          Padding(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 25.0),
-                            child: TextFormField(
-                              decoration: InputDecoration(
-                                  enabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(color: Colors.white),
-                                  ),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderSide:
-                                        BorderSide(color: Colors.grey.shade400),
-                                  ),
-                                  fillColor: Colors.grey.shade200,
-                                  filled: true,
-                                  hintText: "email"),
-                              onSaved: (text) {
-                                profile.email = text;
-                              },
-                              validator: MultiValidator([
-                                RequiredValidator(
-                                    errorText: 'Please insert your email'),
-                                EmailValidator(
-                                    errorText: 'Email pattern invalid')
-                              ]),
-                            ),
+                          // Username textfield
+                          LogInFormTextField(
+                            controller: usernameController,
+                            hintText: "email",
+                            obscureText: false,
+                            onSaved: (text) {
+                              profile.email = text;
+                            },
+                            validator: MultiValidator([
+                              RequiredValidator(
+                                  errorText: 'Please insert your email'),
+                              EmailValidator(
+                                  errorText: 'Email pattern invalid')
+                            ]),
                           ),
 
-                          SizedBox(height: 25),
+                          const SizedBox(height: 25),
 
-                          //Password text field
-                          Padding(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 25.0),
-                            child: TextFormField(
-                              decoration: InputDecoration(
-                                  enabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(color: Colors.white),
-                                  ),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderSide:
-                                        BorderSide(color: Colors.grey.shade400),
-                                  ),
-                                  fillColor: Colors.grey.shade200,
-                                  filled: true,
-                                  hintText: "password"),
-                              obscureText: true,
-                              onSaved: (text) {
-                                profile.password = text;
-                              },
-                              validator: RequiredValidator(
-                                  errorText: 'Please insert password'),
-                            ),
+                          // Password text field
+                          LogInFormTextField(
+                            controller: passwordController,
+                            hintText: "password",
+                            obscureText: true,
+                            onSaved: (text) {
+                              profile.password = text;
+                            },
+                            validator: RequiredValidator(
+                                errorText: 'Please insert password'),
                           ),
 
                           const SizedBox(height: 5),
 
-                          //forgot password?
+                          // Forgot password?
                           Padding(
                             padding:
                                 const EdgeInsets.symmetric(horizontal: 25.0),
@@ -164,7 +139,7 @@ class _LoginPageState extends State<LoginPage> {
 
                           const SizedBox(height: 10),
 
-                          //Sign In Button
+                          // Sign In Button
                           SignInBtn(onTap: () async {
                             if (formKey.currentState!.validate()) {
                               formKey.currentState?.save();
@@ -190,7 +165,7 @@ class _LoginPageState extends State<LoginPage> {
 
                           const SizedBox(height: 25),
 
-                          //or continue with
+                          // Or continue with
                           Padding(
                             padding:
                                 const EdgeInsets.symmetric(horizontal: 25.0),
@@ -218,6 +193,7 @@ class _LoginPageState extends State<LoginPage> {
                           ),
 
                           const SizedBox(height: 25),
+
                           // Google, Facebook button
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -234,7 +210,7 @@ class _LoginPageState extends State<LoginPage> {
 
                           const SizedBox(height: 15),
 
-                          //not a member?
+                          // Not a member?
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
@@ -262,7 +238,7 @@ class _LoginPageState extends State<LoginPage> {
 
                           const SizedBox(height: 5),
 
-                          //not now
+                          // Not now
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
@@ -299,3 +275,4 @@ class _LoginPageState extends State<LoginPage> {
         });
   }
 }
+

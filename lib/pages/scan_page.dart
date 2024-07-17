@@ -1,16 +1,18 @@
+
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:my_application/pages/attendancescreen.dart';
+import 'package:my_application/pages/attendance_page.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 
-class ScanQR_Page extends StatefulWidget {
-  const ScanQR_Page({super.key});
+class ScanQRPage extends StatefulWidget {
+  const ScanQRPage({super.key});
 
   @override
-  State<ScanQR_Page> createState() => _ScanQR_PageState();
+  State<ScanQRPage> createState() => _ScanQR_PageState();
 }
 
-class _ScanQR_PageState extends State<ScanQR_Page> {
+class _ScanQR_PageState extends State<ScanQRPage> {
 
   String barcode = "";
   String result = "";
@@ -85,7 +87,7 @@ class _ScanQR_PageState extends State<ScanQR_Page> {
                       */
 
                       Navigator.pushReplacement(context, MaterialPageRoute(builder: (context){
-                        return AttendanceScreen(scanResult: result,);
+                        return AttendancePage(scanResult: result,);
                       }));
 
                     }
@@ -101,3 +103,4 @@ class _ScanQR_PageState extends State<ScanQR_Page> {
     );
   }
 }
+

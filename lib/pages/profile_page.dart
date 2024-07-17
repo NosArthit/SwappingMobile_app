@@ -1,7 +1,6 @@
-import 'dart:core';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import '../components/profile components/user_info_card.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
@@ -12,60 +11,45 @@ class ProfilePage extends StatelessWidget {
       backgroundColor: Colors.blueGrey[100],
       body: StreamBuilder(
         stream: FirebaseFirestore.instance.collection("user").snapshots(),
-        builder: (context, AsyncSnapshot<QuerySnapshot> snapshot){
-          if(!snapshot.hasData){
-            return Center(child: CircularProgressIndicator(),);
+        builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          if (!snapshot.hasData) {
+            return Center(child: CircularProgressIndicator());
           }
           return ListView(
-            children: snapshot.data!.docs.map((document){
+            children: snapshot.data!.docs.map((document) {
               return Container(
                 child: Align(
                   alignment: Alignment.topCenter,
-                  child: Column(  
+                  child: Column(
                     children: [
-                    
                       SizedBox(height: 100),
-
-                      Text(
-                        document["First Name"] + "  " + document["Last Name"],
-                        style: TextStyle(
-                          fontSize: 30
-                        ),
+                      UserInfoCard(
+                        title: document["First Name"] + " " + document["Last Name"],
+                        content: "",
+                        contentSize: 30,
                       ),
-
-                      SizedBox(height: 25),
-
-                      Text(
-                        "Mobile:  "+ document["Tel"],
-                        style: TextStyle(
-                          fontSize: 20
-                        ),
+                      UserInfoCard(
+                        title: "Mobile: ",
+                        content: document["Tel"],
+                        contentSize: 20,
                       ),
-
-                      SizedBox(height: 15),
-
-                      Text(
-                        "Email:  " + document["Email"],
-                        style: TextStyle(
-                          fontSize: 15
-                        ),
+                      UserInfoCard(
+                        title: "Email: ",
+                        content: document["Email"],
                       ),
-
-                      SizedBox(height: 15),
-
-                      Text(
-                        "Address:  " + document["Address"],
-                        style: TextStyle(
-                          fontSize: 15
-                        ),
+                      UserInfoCard(
+                        title: "Address: ",
+                        content: document["Address"],
                       ),
                     ],
+                  ),
                 ),
-              ));
-            }).toList(),           
+              );
+            }).toList(),
           );
         },
       ),
     );
   }
 }
+

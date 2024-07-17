@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_application/components/home%20components/ad_card.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -7,14 +8,13 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
 
-    /*24 is for notification bar on Android*/
     final double itemHeight = (size.height / 2);
     final double itemWidth = size.width / 1.1;
 
     return Scaffold(
       body: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.all(10.0),
+          padding: const EdgeInsets.all(10.0),
           child: Center(
             child: Column(
               children: [
@@ -23,115 +23,26 @@ class HomePage extends StatelessWidget {
                   crossAxisSpacing: 8,
                   mainAxisSpacing: 8,
                   childAspectRatio: (itemWidth / itemHeight),
-                  controller: new ScrollController(keepScrollOffset: false),
+                  controller: ScrollController(keepScrollOffset: false),
                   shrinkWrap: true,
                   scrollDirection: Axis.vertical,
-                  children: <Widget>[
-
-                    Card(
-                      color: Colors.teal[100],
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12.0),
-                      ),
-                      elevation: 80,
-                      child: Container(
-                        padding: const EdgeInsets.all(3),
-                        child: Column(
-                          children: [   
-                            Text("Ad", style: TextStyle(fontSize: 30, color: Colors.teal[700], fontWeight: FontWeight.bold),)
-                          ],
-                        ),
-                      ),
-                    ),
-
-                    Card(
-                      color: Colors.teal[100],
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12.0),
-                      ),
-                      elevation: 80,
-                      child: Container(
-                        padding: const EdgeInsets.all(3),
-                        child: Column(
-                          children: [   
-                            Text("Member Score", style: TextStyle(fontSize: 30, color: Colors.teal[700], fontWeight: FontWeight.bold),)
-                          ],
-                        ),
-                      ),
-                    ),
-
-                    Card(
-                      color: Colors.teal[100],
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12.0),
-                      ),
-                      elevation: 80,
-                      child: Container(
-                        padding: const EdgeInsets.all(3),
-                        child: Column(
-                          children: [   
-                            Text("Register", style: TextStyle(fontSize: 30, color: Colors.teal[700], fontWeight: FontWeight.bold),)
-                          ],
-                        ),
-                      ),
-                    ),
-
-                    Card(
-                      color: Colors.teal[100],
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12.0),
-                      ),
-                      elevation: 80,
-                      child: Container(
-                        padding: const EdgeInsets.all(3),
-                        child: Column(
-                          children: [   
-                            Text("Power Unit Price", style: TextStyle(fontSize: 30, color: Colors.teal[700], fontWeight: FontWeight.bold),)
-                          ],
-                        ),
-                      ),
-                    ),
-
-                    Card(
-                      color: Colors.teal[100],
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12.0),
-                      ),
-                      elevation: 80,
-                      child: Container(
-                        padding: const EdgeInsets.all(3),
-                        child: Column(
-                          children: [   
-                            Text("Oil Price", style: TextStyle(fontSize: 30, color: Colors.teal[700], fontWeight: FontWeight.bold),)
-                          ],
-                        ),
-                      ),
-                    ),
-
-                    Card(
-                      color: Colors.teal[100],
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12.0),
-                      ),
-                      elevation: 80,
-                      child: Container(
-                        padding: const EdgeInsets.all(3),
-                        child: Column(
-                          children: [   
-                            Text("Ad", style: TextStyle(fontSize: 30, color: Colors.teal[700], fontWeight: FontWeight.bold),)
-                          ],
-                        ),
-                      ),
-                    ),
-
-                  ]
+                  children: const [
+                    AdCard(title: "Ad"),
+                    AdCard(title: "Member Score"),
+                    AdCard(title: "Register"),
+                    AdCard(title: "Power Unit Price"),
+                    AdCard(title: "Oil Price"),
+                    AdCard(title: "Ad"),
+                  ],
                 ),
               ],
             ),
           ),
-
-        ),     
+        ),
       ),
     );
   }
 }
+
+
+

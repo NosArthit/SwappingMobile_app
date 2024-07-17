@@ -1,6 +1,7 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
-
 import 'package:flutter/material.dart';
+import '../components/batinfo components/info_card.dart';
+import '../components/batinfo components/info_row.dart';
+import '../fetchModels/battery_status.dart';
 
 class InfoPage extends StatefulWidget {
   const InfoPage({super.key});
@@ -10,335 +11,136 @@ class InfoPage extends StatefulWidget {
 }
 
 class _InfoPageState extends State<InfoPage> {
+  var bmsState;
+  var cellVol1;
+  var cellVol2;
+  var cellTemp;
+  var batterySpec;
+  var accumulate;
+  var soh;
+  var apiKey = '487e2adc2df6b08000d6803365af3562';
+  var batGeo;
+  var weather;
+  var resWeather;
+
   @override
   Widget build(BuildContext context) {
-    var size = MediaQuery.of(context).size;
-
-    /*24 is for notification bar on Android*/
-    final double itemHeight = (size.height / 2);
-    final double itemWidth = size.width / 0.5;
-
     return Scaffold(
       body: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.all(8),
+          padding: const EdgeInsets.all(8),
           child: Center(
             child: Column(
               children: [
-                GridView.count(
-                  crossAxisCount: 1,
-                  crossAxisSpacing: 8,
-                  mainAxisSpacing: 8,
-                  childAspectRatio: (itemWidth / itemHeight),
-                  controller: new ScrollController(keepScrollOffset: false),
-                  shrinkWrap: true,
-                  scrollDirection: Axis.vertical,
-                  children: <Widget>[
-                    //SizedBox(height: 15,),
-              
-                    Card(
-                      color: Colors.teal[100],
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12.0),
-                      ),
-                      elevation: 80,
-                      child: Container(
-                        padding: const EdgeInsets.all(3),
-                        child: Column(
-                          children: [
-                            SizedBox(height: 3),
-                            Text(
-                              "Battery Status",
-                              style: TextStyle(
-                                  fontSize: 25,
-                                  color: Colors.teal[700],
-                                  fontWeight: FontWeight.w700),
+                FutureBuilder(
+                  future: BatteryStatus(
+                    bmsState: bmsState,
+                    cellVol1: cellVol1,
+                    cellVol2: cellVol2,
+                    cellTemp: cellTemp,
+                    batterySpec: batterySpec,
+                    accumulate: accumulate,
+                    soh: soh,
+                    apiKey: apiKey,
+                    batGeo: batGeo,
+                    weather: weather,
+                    resWeather: resWeather,
+                  ),
+                  builder: (BuildContext context, AsyncSnapshot snapshot) {
+                    if (snapshot.hasData) {
+                      return Column(
+                        children: [
+                          InfoCard(
+                            title: "Battery Status",
+                            content: Column(
+                              children: [
+                                InfoRow(
+                                  label: "Voltage",
+                                  value: "${(bmsState.sysVoltage * 0.1).toString()} V",
+                                  icon: Icons.battery_charging_full,
+                                ),
+                                InfoRow(
+                                  label: "Current",
+                                  value: "${bmsState.sysCurrent.toString()} Amh",
+                                  icon: Icons.signal_cellular_alt_rounded,
+                                ),
+                                InfoRow(
+                                  label: "State of Charge",
+                                  value: "${((bmsState.sysVoltage / 80.0) * 10).toString()} %",
+                                  icon: Icons.flash_on,
+                                ),
+                              ],
                             ),
-                            Padding(
-                              padding: EdgeInsets.all(10),
-                              child: Column(children: [
-                                Container(
-                                  child: Row(children: [
-                                    Text(
-                                      "Voltage   ",
-                                      style: TextStyle(
-                                          fontSize: 20, color: Colors.teal[700]),
-                                    ),
-                                    Icon(Icons.battery_charging_full,
-                                        size: 30, color: Colors.teal[700]),
-                                    Text(
-                                      ":   ",
-                                      style: TextStyle(
-                                          fontSize: 20, color: Colors.teal[700]),
-                                    ),
-                                  ]),
+                          ),
+                          InfoCard(
+                            title: "Temperature",
+                            content: Column(
+                              children: [
+                                InfoRow(
+                                  label: "Battery Temp.",
+                                  value: "${cellTemp.cellAverageTemp.toString()} °C",
+                                  icon: Icons.device_thermostat,
                                 ),
-                                SizedBox(height: 10),
-                                Container(
-                                  child: Row(children: [
-                                    Text(
-                                      "Current   ",
-                                      style: TextStyle(
-                                          fontSize: 20, color: Colors.teal[700]),
-                                    ),
-                                    Icon(Icons.signal_cellular_alt_rounded,
-                                        size: 30, color: Colors.teal[700]),
-                                    Text(
-                                      ":   ",
-                                      style: TextStyle(
-                                          fontSize: 20, color: Colors.teal[700]),
-                                    ),
-                                  ]),
+                                InfoRow(
+                                  label: "Ambient Temp.",
+                                  value: "${(weather.temp * 0.1).toStringAsFixed(1)} °C",
+                                  icon: Icons.wb_sunny_outlined,
                                 ),
-                                SizedBox(height: 10),
-                                Container(
-                                  child: Row(children: [
-                                    Text(
-                                      "Status     ",
-                                      style: TextStyle(
-                                          fontSize: 20, color: Colors.teal[700]),
-                                    ),
-                                    Icon(Icons.list_rounded,
-                                        size: 30, color: Colors.teal[700]),
-                                    Text(
-                                      ":   ",
-                                      style: TextStyle(
-                                          fontSize: 20, color: Colors.teal[700]),
-                                    ),
-                                  ]),
+                                InfoRow(
+                                  label: "Humidity",
+                                  value: "${weather.humidity.toString()} RH (%)",
+                                  icon: Icons.wb_cloudy_outlined,
                                 ),
-                              ]),
+                              ],
                             ),
-                          ],
-                        ),
-                      ),
-                    ),
-              
-                    Card(
-                      color: Colors.teal[100],
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12.0),
-                      ),
-                      elevation: 80,
-                      child: Container(
-                        padding: const EdgeInsets.all(3),
-                        child: Column(
-                          children: [
-                            SizedBox(height: 3),
-                            Text(
-                              "Temperature",
-                              style: TextStyle(
-                                  fontSize: 25,
-                                  color: Colors.teal[700],
-                                  fontWeight: FontWeight.w700),
+                          ),
+                          InfoCard(
+                            title: "Battery Information",
+                            content: Column(
+                              children: [
+                                InfoRow(
+                                  label: "Nominal Voltage",
+                                  value: "${batterySpec.nominalVolt.toString()} V",
+                                  icon: Icons.electrical_services,
+                                ),
+                                InfoRow(
+                                  label: "Capacity",
+                                  value: "${batterySpec.nominalCapacity.toString()} mAh",
+                                  icon: Icons.battery_full,
+                                ),
+                                InfoRow(
+                                  label: "Cycle",
+                                  value: "${accumulate.cycleCount.toString()}",
+                                  icon: Icons.refresh,
+                                ),
+                              ],
                             ),
-                            Padding(
-                              padding: EdgeInsets.all(10),
-                              child: Column(children: [
-                                Container(
-                                  child: Row(children: [
-                                    Text(
-                                      "Battery Temp.   ",
-                                      style: TextStyle(
-                                          fontSize: 20, color: Colors.teal[700]),
-                                    ),
-                                    Icon(Icons.device_thermostat,
-                                        size: 25, color: Colors.teal[700]),
-                                    Text(
-                                      "  :   ",
-                                      style: TextStyle(
-                                          fontSize: 20, color: Colors.teal[700]),
-                                    ),
-                                  ]),
-                                ),
-                                SizedBox(height: 10),
-                                Container(
-                                  child: Row(children: [
-                                    Text(
-                                      "Ambient Temp.   ",
-                                      style: TextStyle(
-                                          fontSize: 20, color: Colors.teal[700]),
-                                    ),
-                                    Icon(Icons.wb_sunny_outlined,
-                                        size: 25, color: Colors.teal[700]),
-                                    Text(
-                                      "    :   ",
-                                      style: TextStyle(
-                                          fontSize: 20, color: Colors.teal[700]),
-                                    ),
-                                  ]),
-                                ),
-                                SizedBox(height: 10),
-                                Container(
-                                  child: Row(children: [
-                                    Text(
-                                      "Humidity     ",
-                                      style: TextStyle(
-                                          fontSize: 20, color: Colors.teal[700]),
-                                    ),
-                                    Icon(Icons.wb_cloudy_outlined,
-                                        size: 25, color: Colors.teal[700]),
-                                    Text(
-                                      "    :   ",
-                                      style: TextStyle(
-                                          fontSize: 20, color: Colors.teal[700]),
-                                    ),
-                                  ]),
-                                ),
-                              ]),
+                          ),
+                          InfoCard(
+                            title: "Battery SoH",
+                            content: InfoRow(
+                              label: "State of Health",
+                              value: "${soh.soh.toString()} %",
+                              icon: Icons.health_and_safety,
                             ),
-                          ],
-                        ),
-                      ),
-                    ),
-              
-                    Card(
-                      color: Colors.teal[100],
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12.0),
-                      ),
-                      elevation: 80,
-                      child: Container(
-                        padding: const EdgeInsets.all(3),
-                        child: Column(
-                          children: [
-                            SizedBox(height: 3),
-                            Text(
-                              "Battery Information",
-                              style: TextStyle(
-                                  fontSize: 25,
-                                  color: Colors.teal[700],
-                                  fontWeight: FontWeight.w700),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.all(10),
-                              child: Column(children: [
-                                Container(
-                                  child: Row(children: [
-                                    Text(
-                                      "Battery Serial No.   ",
-                                      style: TextStyle(
-                                          fontSize: 20, color: Colors.teal[700]),
-                                    ),
-                                    Icon(Icons.verified_user_outlined,
-                                        size: 25, color: Colors.teal[700]),
-                                    Text(
-                                      "  :   ",
-                                      style: TextStyle(
-                                          fontSize: 20, color: Colors.teal[700]),
-                                    ),
-                                  ]),
-                                ),
-                                SizedBox(height: 10),
-                                Container(
-                                  child: Row(children: [
-                                    Text(
-                                      "BMS Status.   ",
-                                      style: TextStyle(
-                                          fontSize: 20, color: Colors.teal[700]),
-                                    ),
-                                    Icon(Icons.rule_sharp,
-                                        size: 25, color: Colors.teal[700]),
-                                    Text(
-                                      "    :   ",
-                                      style: TextStyle(
-                                          fontSize: 20, color: Colors.teal[700]),
-                                    ),
-                                  ]),
-                                ),
-                                SizedBox(height: 10),
-                                Container(
-                                  child: Row(children: [
-                                    Text(
-                                      "BMS Error     ",
-                                      style: TextStyle(
-                                          fontSize: 20, color: Colors.teal[700]),
-                                    ),
-                                    Icon(Icons.settings_suggest_sharp,
-                                        size: 25, color: Colors.teal[700]),
-                                    Text(
-                                      "    :   ",
-                                      style: TextStyle(
-                                          fontSize: 20, color: Colors.teal[700]),
-                                    ),
-                                  ]),
-                                ),
-                              ]),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-              
-                    Card(
-                      color: Colors.teal[100],
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12.0),
-                      ),
-                      elevation: 80,
-                      child: Container(
-                        padding: const EdgeInsets.all(3),
-                        child: Column(
-                          children: [
-                            SizedBox(height: 3),
-                            Text(
-                              "health",
-                              style: TextStyle(
-                                  fontSize: 25,
-                                  color: Colors.teal[700],
-                                  fontWeight: FontWeight.w700),
-                            ),
-                            SizedBox(height: 8),
-                            Padding(
-                              padding: EdgeInsets.all(10),
-                              child: Column(children: [
-                                Container(
-                                  child: Row(children: [
-                                    Text(
-                                      "Battery Health.   ",
-                                      style: TextStyle(
-                                          fontSize: 20, color: Colors.teal[700]),
-                                    ),
-                                    Icon(Icons.eco_sharp,
-                                        size: 25, color: Colors.teal[700]),
-                                    Text(
-                                      "  :   ",
-                                      style: TextStyle(
-                                          fontSize: 20, color: Colors.teal[700]),
-                                    ),
-                                  ]),
-                                ),
-                                SizedBox(height: 10),
-                                Container(
-                                  child: Row(children: [
-                                    Text(
-                                      "State of Current.   ",
-                                      style: TextStyle(
-                                          fontSize: 20, color: Colors.teal[700]),
-                                    ),
-                                    Icon(Icons.flash_on,
-                                        size: 25, color: Colors.teal[700]),
-                                    Text(
-                                      "    :   ",
-                                      style: TextStyle(
-                                          fontSize: 20, color: Colors.teal[700]),
-                                    ),
-                                  ]),
-                                ),
-                              ]),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                          
-                  ]),
-        
-        
-            ]),
+                          ),
+                        ],
+                      );
+                    } else if (snapshot.hasError) {
+                      return const Text("Error fetching battery status");
+                    } else {
+                      return const CircularProgressIndicator();
+                    }
+                  },
+                ),
+              ],
+            ),
           ),
         ),
       ),
     );
   }
 }
+
+
+

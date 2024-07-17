@@ -1,18 +1,19 @@
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:my_application/pages/first_page.dart';
 
-class AttendanceScreen extends StatefulWidget {
-  const AttendanceScreen({Key? key, required this.scanResult})
+class AttendancePage extends StatefulWidget {
+  const AttendancePage({Key? key, required this.scanResult})
       : super(key: key);
   final String scanResult;
 
   @override
-  State<AttendanceScreen> createState() => _AttendanceScreenState();
+  State<AttendancePage> createState() => _AttendanceScreenState();
 }
 
-class _AttendanceScreenState extends State<AttendanceScreen> {
+class _AttendanceScreenState extends State<AttendancePage> {
   bool buildWidgets = false;
 
   @override
