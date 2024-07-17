@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "74428529898",
+    "project_id": "battery-swapping-e3904",
+    "storage_bucket": "battery-swapping-e3904.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:74428529898:android:13687c4ce208ed7a316b93",
+        "android_client_info": {
+          "package_name": "com.example.my_application"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDlYa9OAoE-oQk7klzyy2YvNK40nKi0Mlo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
