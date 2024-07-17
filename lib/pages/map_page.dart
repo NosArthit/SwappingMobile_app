@@ -63,7 +63,7 @@ class MapPageState extends State<MapPage> {
   Future<void> _fetchRoute() async {
     final response = await http.get(
       Uri.parse(
-          'https://maps.googleapis.com/maps/api/directions/json?origin=${_currentPosition.target.latitude},${_currentPosition.target.longitude}&destination=${_stationPosition.target.latitude},${_stationPosition.target.longitude}&key=AIzaSyDlYa9OAoE-oQk7klzyy2YvNK40nKi0Mlo'),
+          'https://maps.googleapis.com/maps/api/directions/json?origin=${_currentPosition.target.latitude},${_currentPosition.target.longitude}&destination=${_stationPosition.target.latitude},${_stationPosition.target.longitude}&key= .......'),
     );
 
     if (response.statusCode == 200) {
